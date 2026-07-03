@@ -1,8 +1,10 @@
 # Binance Futures Trading Bot
 
-A simple Python command-line application that places BUY and SELL MARKET/LIMIT orders on the Binance USDT-M Futures Testnet.
+A simple command-line trading bot built in Python for the Binance USDT-M Futures Testnet.
 
-This project was built as part of a Python Developer application task. The focus is on clean code structure, input validation, logging, and proper error handling while interacting with the Binance Futures Testnet API.
+The application allows users to place **BUY** and **SELL** orders using both **MARKET** and **LIMIT** order types through the Binance Futures Testnet API. It also provides account balance, open orders, logging, and proper error handling.
+
+This project was developed as part of a Python Developer technical assessment with a focus on clean project structure, reusable code, and API integration.
 
 ---
 
@@ -11,18 +13,21 @@ This project was built as part of a Python Developer application task. The focus
 - Place MARKET orders
 - Place LIMIT orders
 - Supports BUY and SELL
-- Command-line interface using Typer
+- Account balance lookup
+- View open orders
+- Cancel open orders
 - Input validation
-- API request/response logging
+- Logging of API requests and responses
 - Exception handling
-- Modular and reusable code structure
+- Modular code structure
+- Command-line interface using Typer
 
 ---
 
 ## Project Structure
 
 ```
-trading_bot/
+binance-futures-trading-bot/
 │
 ├── bot/
 │   ├── __init__.py
@@ -33,191 +38,34 @@ trading_bot/
 │   └── validators.py
 │
 ├── logs/
+│   ├── market_order.log
+│   ├── limit_order.log
 │   └── trading_bot.log
+│
+├── screenshots/
+│   ├── connection.png
+│   ├── market_order.png
+│   ├── limit_order.png
+│   ├── balance.png
+│   └── open_orders.png
+│
+├── tests/
+│   └── test_validators.py
 │
 ├── .env.example
 ├── .gitignore
 ├── cli.py
+├── LICENSE
 ├── README.md
 ├── requirements.txt
-└── LICENSE
+└── test_connection.py
 ```
-
----
-
-## Requirements
-
-- Python 3.10+
-- Binance Futures Testnet Account
-- Binance Testnet API Key & Secret
-
----
-
-## Installation
-
-### Clone the repository
-
-```bash
-git clone https://github.com/koushik140106/binance-futures-trading-bot.git
-
-cd binance-futures-trading-bot
-```
-
-### Create a virtual environment
-
-Windows
-
-```bash
-python -m venv venv
-```
-
-or
-
-```bash
-py -m venv venv
-```
-
-Activate it
-
-```bash
-venv\Scripts\activate
-```
-
-Linux/macOS
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
----
-
-## Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## Binance Testnet Setup
-
-1. Open Binance Futures Testnet.
-2. Create a Testnet account (or log in).
-3. Generate a new API Key and Secret.
-4. Copy both credentials.
-
-Create a `.env` file in the project root.
-
-Example:
-
-```env
-API_KEY=YOUR_API_KEY
-API_SECRET=YOUR_SECRET_KEY
-BASE_URL=https://testnet.binancefuture.com
-```
-
----
-
-## Running the Application
-
-### MARKET BUY
-
-```bash
-python cli.py --symbol BTCUSDT --side BUY --type MARKET --quantity 0.001
-```
-
----
-
-### MARKET SELL
-
-```bash
-python cli.py --symbol BTCUSDT --side SELL --type MARKET --quantity 0.001
-```
-
----
-
-### LIMIT BUY
-
-```bash
-python cli.py --symbol BTCUSDT --side BUY --type LIMIT --quantity 0.001 --price 50000
-```
-
----
-
-### LIMIT SELL
-
-```bash
-python cli.py --symbol BTCUSDT --side SELL --type LIMIT --quantity 0.001 --price 120000
-```
-
----
-
-## Sample Output
-
-```
-========== ORDER REQUEST ==========
-
-Symbol      : BTCUSDT
-Side        : BUY
-Type        : MARKET
-Quantity    : 0.001
-
-Sending order...
-
-Order Placed Successfully
-
-Order ID      : 18708085017
-Status        : NEW
-Executed Qty  : 0.0000
-Average Price : N/A
-```
-
----
-
-## Logging
-
-All API requests, responses, and errors are automatically written to:
-
-```
-logs/trading_bot.log
-```
-
-Example log entry
-
-```
-2026-07-03 20:17:51 | INFO | Order Request | Symbol=BTCUSDT Side=BUY Type=MARKET Qty=0.001
-2026-07-03 20:17:52 | INFO | Order Response | {'orderId': 18708085017, 'status': 'NEW'}
-```
-
----
-
-## Error Handling
-
-The application handles common errors such as:
-
-- Invalid order type
-- Invalid side
-- Missing price for LIMIT orders
-- Invalid quantity
-- Binance API errors
-- Network-related exceptions
-- Unexpected runtime errors
-
----
-
-## Assumptions
-
-- The application is intended for Binance USDT-M Futures Testnet.
-- Valid Testnet API credentials are required.
-- LIMIT orders use `GTC` (Good Till Cancelled).
-- Average price may not be available immediately after placing an order.
 
 ---
 
 ## Technologies Used
 
-- Python
+- Python 3
 - python-binance
 - Typer
 - Rich
@@ -225,31 +73,225 @@ The application handles common errors such as:
 
 ---
 
-## Future Improvements
+## Installation
 
-Some possible enhancements include:
+Clone the repository
 
-- Stop-Limit order support
-- Interactive CLI menu
-- Order history
-- Position monitoring
-- Cancel open orders
-- Account balance command
-- Docker support
-- Unit tests
+```bash
+git clone https://github.com/<your-github-username>/binance-futures-trading-bot.git
+
+cd binance-futures-trading-bot
+```
+
+Create a virtual environment
+
+Windows
+
+```bash
+py -m venv venv
+```
+
+Activate
+
+```bash
+venv\Scripts\activate
+```
+
+Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
-## License
+## Configuration
+
+Create a `.env` file in the project root.
+
+Example:
+
+```env
+API_KEY=YOUR_API_KEY
+API_SECRET=YOUR_API_SECRET
+BASE_URL=https://testnet.binancefuture.com
+```
+
+Generate the API Key and Secret from the Binance Futures Testnet before running the application.
+
+---
+
+# Usage
+
+## Check Connection
+
+```bash
+python test_connection.py
+```
+
+---
+
+## Place a MARKET Order
+
+```bash
+python cli.py trade --symbol BTCUSDT --side BUY --type MARKET --quantity 0.001
+```
+
+---
+
+## Place a LIMIT Order
+
+```bash
+python cli.py trade --symbol BTCUSDT --side SELL --type LIMIT --quantity 0.001 --price 120000
+```
+
+---
+
+## View Account Balance
+
+```bash
+python cli.py balance
+```
+
+---
+
+## View Open Orders
+
+```bash
+python cli.py orders BTCUSDT
+```
+
+---
+
+## Cancel an Order
+
+```bash
+python cli.py cancel BTCUSDT <ORDER_ID>
+```
+
+---
+
+# Screenshots
+
+## Connection Test
+
+Shows successful connection to the Binance Futures Testnet account.
+
+![Connection](screenshots/connection.png)
+
+---
+
+## MARKET Order
+
+Example of placing a BUY MARKET order.
+
+![Market Order](screenshots/market_order.png)
+
+---
+
+## LIMIT Order
+
+Example of placing a SELL LIMIT order.
+
+![Limit Order](screenshots/limit_order.png)
+
+---
+
+## Account Balance
+
+Displays wallet balance and available balance.
+
+![Balance](screenshots/balance.png)
+
+---
+
+## Open Orders
+
+Lists all currently open orders for the selected trading pair.
+
+![Open Orders](screenshots/open_orders.png)
+
+---
+
+# Logging
+
+Every API request and response is automatically logged.
+
+Example log:
+
+```
+2026-07-03 17:45:12 | INFO | Order Request | Symbol=BTCUSDT | Side=BUY | Type=MARKET | Quantity=0.001
+
+2026-07-03 17:45:13 | INFO | Order Response | OrderID=1871331951 | Status=NEW
+```
+
+Log files are stored inside the `logs/` directory.
+
+---
+
+# Error Handling
+
+The application handles common errors such as:
+
+- Invalid trading symbol
+- Invalid order type
+- Invalid order side
+- Missing LIMIT price
+- Invalid quantity
+- Binance API exceptions
+- Network-related errors
+- Unexpected runtime exceptions
+
+---
+
+# Validation
+
+Before placing an order, the application validates:
+
+- Trading symbol
+- BUY / SELL side
+- MARKET / LIMIT order type
+- Quantity
+- Price (required for LIMIT orders)
+
+This prevents invalid requests from being sent to the Binance API.
+
+---
+
+# Assumptions
+
+- The project uses the Binance USDT-M Futures Testnet.
+- Valid Testnet API credentials are required.
+- LIMIT orders use Good Till Cancelled (GTC).
+- Average execution price may not be immediately available after placing a new order.
+
+---
+
+# Future Improvements
+
+Some features that could be added in the future include:
+
+- Stop-Limit orders
+- Take Profit / Stop Loss orders
+- Position management
+- Trade history
+- Docker support
+- Unit tests for API layer
+- Interactive terminal dashboard
+- Configuration file support
+
+---
+
+# License
 
 This project is licensed under the MIT License.
 
 ---
 
-## Author
+# Author
 
 **Koushik Amarendra**
 
-B.Tech CSE (Cyber Security)
+B.Tech – Computer Science & Engineering (Cyber Security)
 
-Python Developer | Cyber Security Enthusiast
+GitHub: https://github.com/koushik140106
